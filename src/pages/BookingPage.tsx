@@ -113,10 +113,10 @@ const BookingPage = () => {
   };
 
   return (
-    <div>
+    <div className="pt-0">
       {/* Hero Banner */}
-      <section className="relative py-32 bg-cover bg-center" style={{ backgroundImage: 'url(https://images.pexels.com/photos/2253870/pexels-photo-2253870.jpeg)' }}>
-        <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+      <section className="relative py-24 bg-cover bg-center" style={{ backgroundImage: 'url(https://images.pexels.com/photos/2253870/pexels-photo-2253870.jpeg)' }}>
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 container-custom text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white font-heading mb-4">
             Book Your Wedding
@@ -131,49 +131,38 @@ const BookingPage = () => {
       <div className="py-6 bg-gray-50 border-b border-gray-200">
         <div className="container-custom">
           <nav aria-label="Progress">
-            <ol className="flex items-center">
+            <ol className="flex items-center justify-between">
               {steps.map((step, index) => (
-                <li key={step.id} className={`relative ${index < steps.length - 1 ? 'pr-8 sm:pr-20' : ''}`}>
-                  {index < currentStep ? (
-                    <div className="flex items-center">
-                      <div className="h-9 w-9 rounded-full bg-primary-500 flex items-center justify-center">
-                        <Check className="w-5 h-5 text-white" />
+                <li key={step.id} className="relative flex items-center">
+                  <div className="flex items-center">
+                    {index <= currentStep ? (
+                      <div className="h-9 w-9 rounded-full bg-primary-500 flex items-center justify-center text-white">
+                        {index < currentStep ? (
+                          <Check className="w-5 h-5" />
+                        ) : (
+                          <span>{index + 1}</span>
+                        )}
                       </div>
-                      {index < steps.length - 1 && (
-                        <div className="hidden sm:flex ml-4 h-0.5 w-16 bg-primary-500" />
-                      )}
-                    </div>
-                  ) : index === currentStep ? (
-                    <div className="flex items-center">
-                      <div className="h-9 w-9 rounded-full bg-primary-500 flex items-center justify-center text-white font-medium">
-                        {index + 1}
-                      </div>
-                      {index < steps.length - 1 && (
-                        <div className="hidden sm:flex ml-4 h-0.5 w-16 bg-gray-300" />
-                      )}
-                    </div>
-                  ) : (
-                    <div className="flex items-center">
+                    ) : (
                       <div className="h-9 w-9 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-500">
                         {index + 1}
                       </div>
-                      {index < steps.length - 1 && (
-                        <div className="hidden sm:flex ml-4 h-0.5 w-16 bg-gray-300" />
-                      )}
+                    )}
+                    <span className="ml-3 text-sm font-medium text-gray-900">
+                      {step.name}
+                    </span>
+                  </div>
+                  {index < steps.length - 1 && (
+                    <div className="hidden md:block w-full bg-gray-200 h-0.5 mx-4">
+                      <div
+                        className="bg-primary-500 h-0.5 transition-all duration-500"
+                        style={{ width: index < currentStep ? '100%' : '0%' }}
+                      ></div>
                     </div>
                   )}
-                  <div className="hidden sm:block absolute top-0 -translate-y-8 text-center w-16">
-                    <p className={`text-sm font-medium ${index <= currentStep ? 'text-primary-600' : 'text-gray-500'}`}>
-                      {step.name}
-                    </p>
-                  </div>
                 </li>
               ))}
             </ol>
-            <div className="flex justify-between mt-2 text-sm sm:hidden">
-              <span className="font-medium text-primary-600">{steps[currentStep].name}</span>
-              <span className="text-gray-500">Step {currentStep + 1} of {steps.length}</span>
-            </div>
           </nav>
         </div>
       </div>
