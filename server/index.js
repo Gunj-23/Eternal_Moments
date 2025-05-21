@@ -38,77 +38,46 @@ app.use(cors({
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
-// Create initial admin user
-const createAdminUser = async () => {
-  try {
-    const adminExists = await User.findOne({ email: 'admin@example.com' });
-    if (!adminExists) {
-      const hashedPassword = await bcrypt.hash('admin123', 10);
-      await User.create({
-        email: 'admin@example.com',
-        password: hashedPassword,
-        firstName: 'Admin',
-        lastName: 'User',
-        role: 'admin'
-      });
-      console.log('Admin user created');
-    }
-  } catch (error) {
-    console.error('Error creating admin user:', error);
+// Test users data
+const testUsers = [
+  {
+    email: 'admin@example.com',
+    password: 'admin123',
+    firstName: 'Admin',
+    lastName: 'User',
+    role: 'admin'
+  },
+  {
+    email: 'client@example.com',
+    password: 'client123',
+    firstName: 'Client',
+    lastName: 'User',
+    role: 'client'
+  },
+  {
+    email: 'vendor@example.com',
+    password: 'vendor123',
+    firstName: 'Vendor',
+    lastName: 'User',
+    role: 'vendor'
   }
+];
+
+// In-memory user storage
+let users = [];
+
+// Initialize test users
+const initializeTestUsers = async () => {
+  users = testUsers.map(user => ({
+    ...user,
+    _id: Math.random().toString(36).substr(2, 9),
+    password: bcrypt.hashSync(user.password, 10)
+  }));
+  console.log('Test users initialized');
 };
 
-// Create initial client user
-const createClientUser = async () => {
-  try {
-    const clientExists = await User.findOne({ email: 'client@example.com' });
-    if (!clientExists) {
-      const hashedPassword = await bcrypt.hash('client123', 10);
-      await User.create({
-        email: 'client@example.com',
-        password: hashedPassword,
-        firstName: 'Client',
-        lastName: 'User',
-        role: 'client'
-      });
-      console.log('Client user created');
-    }
-  } catch (error) {
-    console.error('Error creating client user:', error);
-  }
-};
-
-// Create initial vendor user
-const createVendorUser = async () => {
-  try {
-    const vendorExists = await User.findOne({ email: 'vendor@example.com' });
-    if (!vendorExists) {
-      const hashedPassword = await bcrypt.hash('vendor123', 10);
-      await User.create({
-        email: 'vendor@example.com',
-        password: hashedPassword,
-        firstName: 'Vendor',
-        lastName: 'User',
-        role: 'vendor'
-      });
-      console.log('Vendor user created');
-    }
-  } catch (error) {
-    console.error('Error creating vendor user:', error);
-  }
-};
-
-// Create initial users after database connection
-mongoose.connection.once('open', () => {
-  createAdminUser();
-  createClientUser();
-  createVendorUser();
-});
+// Initialize test users on startup
+initializeTestUsers();
 
 // JWT middleware
 const authenticateToken = (req, res, next) => {
@@ -120,7 +89,7 @@ const authenticateToken = (req, res, next) => {
   }
   
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret_key_here');
     req.user = decoded;
     next();
   } catch (err) {
@@ -148,30 +117,30 @@ app.post('/api/auth/register', async (req, res) => {
     const { email, password, firstName, lastName, role } = req.body;
     
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = users.find(u => u.email === email);
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists with this email' });
     }
     
     // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
     
     // Create new user
-    const user = new User({
+    const newUser = {
+      _id: Math.random().toString(36).substr(2, 9),
       email,
       password: hashedPassword,
       firstName,
       lastName,
       role: role || 'client'
-    });
+    };
     
-    await user.save();
+    users.push(newUser);
     
     // Generate JWT token
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
+      { id: newUser._id, email: newUser.email, role: newUser.role },
+      process.env.JWT_SECRET || 'your_jwt_secret_key_here',
       { expiresIn: '30d' }
     );
     
@@ -179,11 +148,11 @@ app.post('/api/auth/register', async (req, res) => {
     res.status(201).json({
       token,
       user: {
-        id: user._id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        role: user.role
+        id: newUser._id,
+        email: newUser.email,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        role: newUser.role
       }
     });
   } catch (err) {
@@ -196,7 +165,7 @@ app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
     
     // Check if user exists
-    const user = await User.findOne({ email });
+    const user = users.find(u => u.email === email);
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
@@ -210,7 +179,7 @@ app.post('/api/auth/login', async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'your_jwt_secret_key_here',
       { expiresIn: '30d' }
     );
     
@@ -233,7 +202,7 @@ app.post('/api/auth/login', async (req, res) => {
 // API routes
 app.use('/api/auth/me', authenticateToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = users.find(u => u._id === req.user.id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
