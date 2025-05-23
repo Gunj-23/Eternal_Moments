@@ -2,12 +2,39 @@ import { useState } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, Calendar, MessageSquare, Clock, User, ChevronRight, ChevronDown,
+<<<<<<< HEAD
+  DollarSign, Star
+=======
   DollarSign, Star, Users
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
 } from 'lucide-react';
 import { useAuth } from '../../../contexts/AuthContext';
 import { DASHBOARD_MENUS } from '../../../utils/constants';
 
 const VendorOverview = () => {
+<<<<<<< HEAD
+  const stats = {
+    activeWeddings: 5,
+    completedWeddings: 12,
+    totalEarnings: 45000,
+    averageRating: 4.8
+  };
+
+  const upcomingWeddings = [
+    {
+      id: 'WB-2024-001',
+      couple: 'Michael & Emma',
+      date: '2024-07-15',
+      venue: 'Sunset Gardens',
+      services: ['Photography', 'Videography']
+    },
+    {
+      id: 'WB-2024-002',
+      couple: 'David & Lisa',
+      date: '2024-08-22',
+      venue: 'Beachside Resort',
+      services: ['Photography']
+=======
   const stats = [
     {
       title: 'Total Bookings',
@@ -55,11 +82,75 @@ const VendorOverview = () => {
       time: '16:30',
       type: 'Wedding Reception',
       location: 'Grand Ballroom'
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
     }
   ];
 
   return (
     <div className="space-y-8">
+<<<<<<< HEAD
+      <h2 className="text-2xl font-bold mb-6">Vendor Dashboard</h2>
+      
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="card p-6">
+          <h3 className="text-lg font-medium mb-2">Active Weddings</h3>
+          <p className="text-3xl font-bold">{stats.activeWeddings}</p>
+          <p className="text-sm text-gray-500 mt-2">Currently in progress</p>
+        </div>
+        
+        <div className="card p-6">
+          <h3 className="text-lg font-medium mb-2">Completed</h3>
+          <p className="text-3xl font-bold">{stats.completedWeddings}</p>
+          <p className="text-sm text-gray-500 mt-2">Total weddings completed</p>
+        </div>
+        
+        <div className="card p-6">
+          <h3 className="text-lg font-medium mb-2">Total Earnings</h3>
+          <p className="text-3xl font-bold">${stats.totalEarnings.toLocaleString()}</p>
+          <p className="text-sm text-gray-500 mt-2">All time earnings</p>
+        </div>
+        
+        <div className="card p-6">
+          <h3 className="text-lg font-medium mb-2">Rating</h3>
+          <p className="text-3xl font-bold">{stats.averageRating}</p>
+          <div className="flex items-center mt-2">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`w-4 h-4 ${i < Math.floor(stats.averageRating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Upcoming Weddings */}
+      <div className="card p-6">
+        <h3 className="text-lg font-medium mb-4">Upcoming Weddings</h3>
+        <div className="space-y-4">
+          {upcomingWeddings.map(wedding => (
+            <div key={wedding.id} className="border-b border-gray-200 last:border-0 pb-4 last:pb-0">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h4 className="font-medium">{wedding.couple}</h4>
+                  <p className="text-sm text-gray-500">{wedding.venue}</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {wedding.services.map(service => (
+                      <span key={service} className="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-xs">
+                        {service}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-medium">{new Date(wedding.date).toLocaleDateString()}</p>
+                  <button className="text-primary-600 text-sm mt-2">View Details</button>
+                </div>
+              </div>
+            </div>
+          ))}
+=======
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
           <div key={index} className="card p-6">
@@ -131,6 +222,7 @@ const VendorOverview = () => {
               <p className="text-sm font-medium mt-1">- Sarah & Michael</p>
             </div>
           </div>
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
         </div>
       </div>
     </div>
@@ -141,6 +233,21 @@ const VendorWeddings = () => {
   const weddings = [
     {
       id: 'WB-2024-001',
+<<<<<<< HEAD
+      couple: 'Michael & Emma',
+      date: '2024-07-15',
+      venue: 'Sunset Gardens',
+      services: ['Photography', 'Videography'],
+      status: 'upcoming'
+    },
+    {
+      id: 'WB-2024-002',
+      couple: 'David & Lisa',
+      date: '2024-08-22',
+      venue: 'Beachside Resort',
+      services: ['Photography'],
+      status: 'completed'
+=======
       couple: 'Sarah & Michael',
       date: '2024-07-15',
       venue: 'Crystal Gardens',
@@ -162,12 +269,59 @@ const VendorWeddings = () => {
       venue: 'Sunset Beach Resort',
       status: 'completed',
       services: ['Photography']
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
     }
   ];
 
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Assigned Weddings</h2>
+<<<<<<< HEAD
+      
+      <div className="card overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Wedding ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Couple</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Venue</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {weddings.map(wedding => (
+              <tr key={wedding.id}>
+                <td className="px-6 py-4 whitespace-nowrap">{wedding.id}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{wedding.couple}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{new Date(wedding.date).toLocaleDateString()}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{wedding.venue}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex flex-wrap gap-1">
+                    {wedding.services.map(service => (
+                      <span key={service} className="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-xs">
+                        {service}
+                      </span>
+                    ))}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    wedding.status === 'upcoming' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
+                  }`}>
+                    {wedding.status}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <button className="text-primary-600 hover:text-primary-900">View Details</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+=======
 
       <div className="grid gap-6">
         {weddings.map((wedding) => (
@@ -207,6 +361,7 @@ const VendorWeddings = () => {
             </div>
           </div>
         ))}
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
       </div>
     </div>
   );
@@ -216,18 +371,30 @@ const VendorMessages = () => {
   const messages = [
     {
       id: 1,
+<<<<<<< HEAD
+      from: 'Michael & Emma',
+      message: 'Hi, we would like to discuss the photography package for our wedding.',
+      time: '2 hours ago',
+=======
       from: 'Sarah Johnson',
       subject: 'Wedding Photography Details',
       message: 'Hi, I wanted to discuss the photography timeline for our wedding...',
       date: '2024-03-15 10:30 AM',
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
       unread: true
     },
     {
       id: 2,
+<<<<<<< HEAD
+      from: 'Wedding Coordinator',
+      message: 'Please confirm your availability for the upcoming wedding next month.',
+      time: '1 day ago',
+=======
       from: 'Michael Smith',
       subject: 'Venue Setup Question',
       message: 'Quick question about the venue setup for next week...',
       date: '2024-03-14 3:45 PM',
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
       unread: false
     }
   ];
@@ -235,6 +402,24 @@ const VendorMessages = () => {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Messages</h2>
+<<<<<<< HEAD
+      
+      <div className="card divide-y divide-gray-200">
+        {messages.map(message => (
+          <div key={message.id} className={`p-4 ${message.unread ? 'bg-primary-50' : ''}`}>
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="font-medium">{message.from}</h3>
+                <p className="text-gray-600 mt-1">{message.message}</p>
+              </div>
+              <div className="text-sm text-gray-500">{message.time}</div>
+            </div>
+            <div className="mt-4 flex justify-end space-x-2">
+              <button className="text-primary-600">Reply</button>
+              {message.unread && (
+                <button className="text-gray-600">Mark as Read</button>
+              )}
+=======
 
       <div className="card divide-y">
         {messages.map((message) => (
@@ -249,6 +434,7 @@ const VendorMessages = () => {
             <p className="mt-2 text-gray-600">{message.message}</p>
             <div className="mt-3 flex justify-end">
               <button className="btn btn-outline">Reply</button>
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
             </div>
           </div>
         ))}
@@ -260,6 +446,18 @@ const VendorMessages = () => {
 const VendorAvailability = () => {
   const schedule = [
     {
+<<<<<<< HEAD
+      date: '2024-07-15',
+      events: [
+        { time: '14:00', event: 'Wedding Ceremony - Michael & Emma' },
+        { time: '16:00', event: 'Reception Photography' }
+      ]
+    },
+    {
+      date: '2024-07-22',
+      events: [
+        { time: '10:00', event: 'Engagement Shoot - David & Lisa' }
+=======
       date: '2024-04-15',
       events: [
         { time: '14:00-18:00', type: 'Wedding Ceremony', client: 'Sarah & Michael' }
@@ -269,6 +467,7 @@ const VendorAvailability = () => {
       date: '2024-04-20',
       events: [
         { time: '16:30-22:00', type: 'Wedding Reception', client: 'Emma & James' }
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
       ]
     }
   ];
@@ -277,6 +476,31 @@ const VendorAvailability = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Availability Calendar</h2>
+<<<<<<< HEAD
+        <button className="btn btn-primary">Add Event</button>
+      </div>
+      
+      <div className="card p-6">
+        <div className="space-y-6">
+          {schedule.map(day => (
+            <div key={day.date} className="border-b border-gray-200 last:border-0 pb-6 last:pb-0">
+              <h3 className="font-medium mb-4">{new Date(day.date).toLocaleDateString('en-US', { 
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}</h3>
+              <div className="space-y-3">
+                {day.events.map((event, index) => (
+                  <div key={index} className="flex items-start">
+                    <div className="w-20 font-medium">{event.time}</div>
+                    <div className="flex-1 bg-gray-50 p-3 rounded-lg">
+                      {event.event}
+                    </div>
+                  </div>
+                ))}
+              </div>
+=======
         <button className="btn btn-primary">Update Schedule</button>
       </div>
 
@@ -293,6 +517,7 @@ const VendorAvailability = () => {
                   <p className="text-sm text-gray-500">{event.client}</p>
                 </div>
               ))}
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
             </div>
           ))}
         </div>
@@ -303,17 +528,66 @@ const VendorAvailability = () => {
 
 const VendorProfile = () => {
   const [profile, setProfile] = useState({
+<<<<<<< HEAD
+    specialties: ['Wedding Photography', 'Videography'],
+    experience: '5 years',
+    portfolio: [
+      {
+        id: 1,
+        title: 'Beach Wedding',
+        image: 'https://images.pexels.com/photos/169198/pexels-photo-169198.jpeg'
+      },
+      {
+        id: 2,
+        title: 'Garden Reception',
+        image: 'https://images.pexels.com/photos/169193/pexels-photo-169193.jpeg'
+      }
+    ]
+=======
     firstName: 'Vendor',
     lastName: 'User',
     email: 'vendor@example.com',
     phone: '(555) 123-4567',
     specialties: ['Photography', 'Videography'],
     bio: 'Professional wedding photographer with over 5 years of experience...'
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
   });
 
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Vendor Profile</h2>
+<<<<<<< HEAD
+      
+      <div className="card p-6">
+        <h3 className="text-lg font-medium mb-4">Specialties & Experience</h3>
+        <div className="space-y-4">
+          <div>
+            <label className="form-label">Specialties</label>
+            <div className="flex flex-wrap gap-2">
+              {profile.specialties.map(specialty => (
+                <span key={specialty} className="px-3 py-1 bg-primary-100 text-primary-800 rounded-full">
+                  {specialty}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label className="form-label">Experience</label>
+            <p>{profile.experience}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div className="card p-6">
+        <h3 className="text-lg font-medium mb-4">Portfolio</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {profile.portfolio.map(item => (
+            <div key={item.id} className="overflow-hidden rounded-lg">
+              <img src={item.image} alt={item.title} className="w-full h-48 object-cover" />
+              <p className="mt-2 font-medium">{item.title}</p>
+            </div>
+          ))}
+=======
 
       <div className="card p-6">
         <div className="flex justify-center mb-6">
@@ -378,6 +652,7 @@ const VendorProfile = () => {
 
         <div className="mt-6 flex justify-end">
           <button className="btn btn-primary">Save Changes</button>
+>>>>>>> 34470c733b90f6947a549f930e44ca1fd4f35fc3
         </div>
       </div>
     </div>
